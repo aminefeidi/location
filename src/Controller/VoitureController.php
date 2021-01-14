@@ -20,9 +20,12 @@ class VoitureController extends AbstractController
      */
     public function index(VoitureRepository $voitureRepository): Response
     {
+        $isAdmin = $this->getUser()->getRoles() == ['ROLE_ADMIN'];
+        $agence = $this->getUser()->getAgence();
+
         return $this->render('voiture/index.html.twig', [
-            'voitures' => $voitureRepository->findAll(),
-            'isAdmin' => false
+            'voitures' => $isAdmin ? $voitureRepository->findAll() : $voitureRepository->findBy(['agence' => $agence->getId()]),
+            'isAdmin' => $isAdmin
         ]);
     }
 

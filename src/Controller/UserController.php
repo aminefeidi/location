@@ -21,7 +21,11 @@ class UserController extends AbstractController
     public function index(UserRepository $userRepository): Response
     {
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $userRepository->createQueryBuilder('u')
+                ->andWhere('u.roles LIKE :role')
+                ->setParameter('role','%"ROLE_AGENT"%')
+                ->getQuery()
+                ->getResult(),
         ]);
     }
 
@@ -35,7 +39,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setRole('ROLE_AGENT');
+            $user->setRoles(['ROLE_AGENT']);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
