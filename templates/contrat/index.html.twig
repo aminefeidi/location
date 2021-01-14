@@ -10,6 +10,8 @@
             <tr>
                 <th>Id</th>
                 <th>Type</th>
+                <th>Client</th>
+                <th>Voiture</th>
                 <th>Date De Depart</th>
                 <th>Date De Retour</th>
                 <th></th>
@@ -20,6 +22,8 @@
             <tr>
                 <td>{{ contrat.id }}</td>
                 <td>{{ contrat.type }}</td>
+                <td>{{ contrat.getClient().getNom() }}</td>
+                <td>{{ contrat.getVoiture().getMarque() }}-{{ contrat.getVoiture().getMatricule() }}</td>
                 <td>{{ contrat.dateDeDep ? contrat.dateDeDep|date('Y-m-d') : '' }}</td>
                 <td>{{ contrat.dateDeRet ? contrat.dateDeRet|date('Y-m-d') : '' }}</td>
                 <td>

@@ -35,6 +35,10 @@ class FactureController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $contrat = $form->get('contrat')->getData();
+            $datediff = strtotime($contrat->getDateDeRet()->format('Y-m-d')) - strtotime($contrat->getDateDeDep()->format('Y-m-d'));
+            $days = round($datediff / (60 * 60 * 24));
+            $facture->setMontant(100 * $days);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($facture);
             $entityManager->flush();

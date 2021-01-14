@@ -121,4 +121,8 @@ class Contrat
                 ->addViolation();
         }
     }
+
+    public function __toString() {
+        return $this->getId() . ' - ' .  $this->getVoiture()->getMarque() . ' - ' . $this->getClient()->getNom();
+    }
 }

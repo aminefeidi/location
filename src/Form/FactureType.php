@@ -2,7 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Client;
+use App\Entity\Contrat;
 use App\Entity\Facture;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,8 +16,11 @@ class FactureType extends AbstractType
     {
         $builder
             ->add('client')
+            ->add('contrat',EntityType::class,[
+                'class' => Contrat::class,
+                'mapped' => false
+            ])
             ->add('dateDeFacture')
-            ->add('montant')
             ->add('payee')
         ;
     }
