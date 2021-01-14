@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\ContratRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass=ContratRepository::class)
@@ -106,5 +108,17 @@ class Contrat
         $this->voiture = $voiture;
 
         return $this;
+    }
+
+    /**
+     * @Assert\Callback
+     */
+    public function validateDates(ExecutionContextInterface $context, $payload)
+    {
+        if(date('Y-m-d', strtotime($this->dateDeRet->format("Y-m-d"))) < date('Y-m-d', strtotime("+1 day", strtotime($this->dateDeDep->format("Y-m-d"))))){
+            $context->buildViolation('Date de retour doit etre superieure au date de depart.')
+                ->atPath('dateRet')
+                ->addViolation();
+        }
     }
 }
